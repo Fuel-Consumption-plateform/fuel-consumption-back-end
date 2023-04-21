@@ -1,10 +1,10 @@
 import { IsIn, IsNotEmpty } from 'class-validator';
 
-export class AuthWebLogin {
+export class AuthDto {
 
     @IsNotEmpty({ message: 'email is required' })
     email: string;
   
     @IsNotEmpty({ message: 'password is required' })
-    password: 'user' | 'admin';
+    password:string;
   }

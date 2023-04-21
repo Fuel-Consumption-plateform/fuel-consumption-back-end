@@ -8,12 +8,14 @@ import { UpdateUserDto } from './dto/update.dto';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private model: Model<UserDocument>) {}
-    
-    
+    constructor(@InjectModel(User.name)
+    private model: Model<UserDocument>) {
+
+    }
     
     async authUser(email: string, password: string): Promise<User> {
-        const user = await this.model.findOne({ email});
+       console.log(email);
+        const user = await this.model.findOne({email});
         if (!user) throw new UnauthorizedException('Invalid credentials');
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -21,21 +23,19 @@ export class UserService {
 
         return user;
       }
-      async createUser(createUser: CreateUserDto) {
+      async createUser(createUser: CreateUserDto,user): Promise<UserDocument> {
+      
+        console.log(user);
+        console.log("IIIIIIIII");
         const userExist = await this.model.findOne({
-          name: createUser.name,
+         
           email: createUser.email,
-          password:createUser.password,
-          role:createUser.role
+         
         });
         if (userExist) throw new BadRequestException({ message: 'User exist' });
 
-        try {
-          const user = await new this.model(createUser).save();
-          return user;
-        } catch (e) {
-          throw new BadRequestException({ message: e.message });
-        }
+        return  await new  this.model(createUser).save();
+          
       }
 
       async update(
@@ -72,11 +72,49 @@ export class UserService {
         return user;
       }
 
-      async find(any){
-        const user = await this.model.find(any);
+      async find(){
+        const user = await this.model.find();
 
         if (!user) throw new BadRequestException({ message: 'User not found.' });
 
         return user;
+      }
+
+      async softdelete(
+        _id: Schema.Types.ObjectId,
+        
+      ): Promise<UserDocument> {
+        try {
+          const user = await this.model.findOneAndUpdate(
+            { _id },
+            {isDeleted:true},
+          
+          );
+
+          if (!user) throw new NotFoundException({ message: 'User not found' });
+
+          return user;
+        } catch (e) {
+          throw new BadRequestException({ message: e.message });
+        }
+      }
+
+      async recoveruser(
+        _id: Schema.Types.ObjectId,
+        
+      ): Promise<UserDocument> {
+        try {
+          const user = await this.model.findOneAndUpdate(
+            { _id },
+            {isDeleted:false},
+          
+          );
+
+          if (!user) throw new NotFoundException({ message: 'User not found' });
+
+          return user;
+        } catch (e) {
+          throw new BadRequestException({ message: e.message });
+        }
       }
 }

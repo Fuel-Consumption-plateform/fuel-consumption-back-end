@@ -1,7 +1,8 @@
-import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as _Schema } from 'mongoose';
+
+import { Document} from 'mongoose';
 
 import * as bcrypt from 'bcryptjs';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type UserDocument = User & Document;
 
@@ -13,6 +14,8 @@ export type UserDocument = User & Document;
    
    */
   { timestamps: true },
+  
+  
 )
 export class User {
 
