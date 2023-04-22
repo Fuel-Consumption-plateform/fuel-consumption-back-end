@@ -15,7 +15,7 @@ export class CreateDeviceDto {
   Model?: string;
 
   @IsOptional()
-  Channel?: string;
+  channel?: string;
 
   @Optional()
   used?: boolean;

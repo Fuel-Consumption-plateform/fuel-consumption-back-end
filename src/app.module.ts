@@ -8,6 +8,7 @@ import { MorganInterceptor, MorganModule } from 'nest-morgan';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { DeviceModule } from './modules/device/device.module';
+import { VehiculeModule } from './modules/vehicule/vehicule.module';
 
 const {
   MONGO_DB_CONNECTION = 'mongodb://127.0.0.1:27017/fuelComsuptionDB'
@@ -20,6 +21,7 @@ const {
     UserModule,
     AuthModule,
     DeviceModule,
+    VehiculeModule,
   ],
   controllers: [AppController],
   providers: [AppService,{ provide: APP_INTERCEPTOR, useClass: MorganInterceptor('dev') },],
