@@ -3,7 +3,7 @@ import { GeolocService } from './geoloc.service';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [ScheduleModule.forRoot()],
+  imports: [ScheduleModule.forRoot(), ],
   providers: [GeolocService,],
  
 })
