@@ -1,19 +1,23 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema, version } from 'mongoose';
+import { Model, Schema, get, version } from 'mongoose';
 import { Vehicule, VehiculeDocument } from './vehicule.model';
 import { CreateVehiculeDto } from './dto/create.dto';
 import * as csv from 'csv-parser';
 import * as fs from 'fs';
 import { UpdateVehiculeDto } from './dto/update.dto';
+import { GeolocService } from '../geoloc/geoloc.service';
 
 @Injectable()
 export class VehiculeService {
     constructor(@InjectModel(Vehicule.name)
-    private model: Model<VehiculeDocument>) {}
+    private model: Model<VehiculeDocument>,
+    private geolocService:GeolocService
+    
+    ) {}
 
     async find(){
-        const vehicule = await this.model.find();
+        const vehicule = await this.model.find().populate('device_id');
 
         if (!vehicule) throw new BadRequestException({ message: 'Vehicule not found.' });
 
@@ -35,7 +39,7 @@ export class VehiculeService {
         return vehicule;
       }
 
-      async create(vehiculeData: CreateVehiculeDto, calibrationFilePath: string):  Promise<any> {
+      async create(vehiculeData: CreateVehiculeDto, calibrationFilePath: string):  Promise<Vehicule> {
         console.log( 'ICCCII', calibrationFilePath);
         const vehicule = await new this.model(
                 vehiculeData
@@ -65,7 +69,16 @@ export class VehiculeService {
                 console.log(vehicule.calibration);
 
             
-                return vehicule.save();
+               vehicule.save().then(async (res)=> {
+                console.log(res._id);
+                const vehicule_id_en_string = res._id.toString();
+                console.log(vehicule_id_en_string);
+                  const geoloc= await this.geolocService.createGeoloc({vehicule:vehicule_id_en_string});
+
+                  console.log(geoloc);
+               });
+
+              
               },
           
               );
@@ -74,7 +87,7 @@ export class VehiculeService {
               vehicule.calibration= calibrationData;
               console.log('ICIIIIIIIIIIDATA');
               console.log(vehicule.calibration);
-              return { message: 'Vehicule created successfully'};
+              return ;
         }
 
         

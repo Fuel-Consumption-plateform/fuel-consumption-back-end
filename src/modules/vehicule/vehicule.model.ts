@@ -5,7 +5,7 @@ export type VehiculeDocument = Vehicule & Document;
 @Schema()
 export class Vehicule extends Document {
 
-@Prop({ required:true })
+@Prop({ required:true ,ref:'Device'})
 device_id: string;
 
 @Prop({ required:true })

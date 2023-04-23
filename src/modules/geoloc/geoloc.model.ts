@@ -14,8 +14,9 @@ const LocSchema = new  _Schema(
     timestamp: { type: Number, required: true },
     server_timestamp: { type: Number, required: true },
     allumage: { type: Boolean, required: true },
+    date: {type: Date, required:true}
   },
-  { timestamps: true, _id: false },
+  { timestamps: true},
 );
 
 
@@ -35,7 +36,7 @@ export type GeolocDocument = Geoloc & Document;
 export class Geoloc {
 
   @Prop({ required: true, ref: 'Vehicule' })
-  vehicule_id: string
+  vehicule_id:  string;
 
   @Prop({  type: Array, of : LocSchema })
   loc: Array< 
@@ -46,6 +47,7 @@ export class Geoloc {
     timestamp: number;
     server_timestamp: number;
     allumage: boolean;
+    date:Date;
 
   }>;
 
