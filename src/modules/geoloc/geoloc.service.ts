@@ -4,11 +4,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import sendRequestToFlespi from 'utils/flespiRequest';
 import { Geoloc, GeolocDocument } from './geoloc.model';
-import { Model, Types } from 'mongoose';
+import { Model, Schema, Types } from 'mongoose';
 import { DeviceService } from '../device/device.service';
 import { Reading, convertFuel_levl } from 'utils/convertFuel_levl';
 import { CreateGeolocDto } from './dto/create.dto';
 import { ObjectId } from 'bson';
+import { timestampToDate } from 'utils/timestampToDate';
 
 
 
@@ -71,23 +72,23 @@ export class GeolocService {
                   'timestamp': item['timestamp'],
                   'server_timestamp': item['server.timestamp'],
                   'allumage': item['engine.ignition.status'],
-                  'date': new Date(item['server.timestamp'])
+                  'date':   timestampToDate(item['server.timestamp']) 
                   
                 }
               })
               // console.log("LOCCCCCCC",loc);
-            let locations = item.loc? [ ...item.loc,loc] : loc
+            const locations = item.loc? [ ...item.loc,loc] : loc
              
             // console.log('locations',);
 
-              var result= await this.model.findOneAndUpdate({vehicule_id:item.vehicule_id['_id']}, {
+               return await this.model.findOneAndUpdate({vehicule_id:item.vehicule_id['_id']}, {
                 loc:locations
-              })
+              }, {new:true})
               // console.log(result);
             }
 
             //ICI SOCKET
-            
+
            
           }
         }));
@@ -117,6 +118,47 @@ export class GeolocService {
     } catch (e) {
       throw new BadRequestException({ message: e.message });
     }
+  }
+
+   //Get all geoloc
+   async find(){
+    const geoloc = await this.model.find();
+
+    if (!Geoloc) throw new BadRequestException({ message: 'Geoloc not found.' });
+
+    return geoloc;
+  }
+  //Get all geoloc by Date
+  async findByDate(obj: {
+    date?: Date;
+  }): Promise<Geoloc[]>{
+    const filter: any = {};
+
+    if (obj.date) filter.date = obj.date;
+    const geoloc = await this.model.find({
+      
+        'loc.date': { $gte: filter }
+      ,
+    });
+
+    if (!geoloc) throw new BadRequestException({ message: 'Geoloc not found.' });
+
+    return geoloc;
+  }
+
+  async findOne(obj: {
+    _id?: Schema.Types.ObjectId;
+    vehicule_id?: string;
+  }): Promise<GeolocDocument> {
+    const filter: any = {};
+
+    if (obj._id) filter._id = obj._id;
+
+    const geoloc = await this.model.findOne(filter);
+
+    if (!geoloc) throw new BadRequestException({ message: 'Geoloc not found.' });
+
+    return geoloc;
   }
 
   

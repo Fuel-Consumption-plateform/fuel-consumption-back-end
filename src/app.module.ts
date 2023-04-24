@@ -11,6 +11,7 @@ import { DeviceModule } from './modules/device/device.module';
 import { VehiculeModule } from './modules/vehicule/vehicule.module';
 import { GeolocController } from './modules/geoloc/geoloc.controller';
 import { GeolocModule } from './modules/geoloc/geoloc.module';
+import { SitesModule } from './modules/sites/sites.module';
 
 const {
   MONGO_DB_CONNECTION = 'mongodb://127.0.0.1:27017/fuelComsuptionDB'
@@ -25,6 +26,7 @@ const {
     DeviceModule,
     VehiculeModule,
     GeolocModule,
+    SitesModule,
   ],
   controllers: [AppController, GeolocController],
   providers: [AppService,{ provide: APP_INTERCEPTOR, useClass: MorganInterceptor('dev') },],

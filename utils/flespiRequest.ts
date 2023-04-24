@@ -22,7 +22,7 @@ const sendRequestToFlespi = async (channel: string, lastTimeStamp) => {
     })
     .catch((e) => {
     console.log(url)
-      console.error({ message: e.message, service: 'keccel' });
+      console.error({ message: e.message, service: 'flespi' });
     });
 };
 
