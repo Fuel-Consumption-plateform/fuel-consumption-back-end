@@ -46,6 +46,15 @@ export class UserController {
         const user = await this.userService.update(id, updateUserDto);
         return {user} ;
       }
+      @Put('softdelete/:id')
+      @UseGuards(JwtAuthGuard)
+      async softdelete(
+        @Param('id', new ObjectIdPipe()) id: Schema.Types.ObjectId,
+      ): Promise<{user:User}> {
+        const user = await this.userService.softdelete(id);
+        return {user} ;
+      }
+
 
       @Put('recoveruser/:id')
       @UseGuards(JwtAuthGuard)

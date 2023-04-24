@@ -103,6 +103,7 @@ export class GeolocService {
               // console.log(result);
 
               if(result){
+                //ICI SOCKET
                 this.afterInit(this.server);
                 console.log('send message to frontend',loc);
                 this.server.emit('event', loc)
@@ -115,7 +116,7 @@ export class GeolocService {
               
             }
 
-            //ICI SOCKET
+            
             
             
 
