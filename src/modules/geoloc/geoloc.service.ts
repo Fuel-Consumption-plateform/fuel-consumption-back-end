@@ -99,7 +99,7 @@ export class GeolocService {
 
                const result=  await this.model.findOneAndUpdate({vehicule_id:item.vehicule_id['_id']}, {
                 loc:locations
-              }, {new:true})
+              })
               // console.log(result);
 
               if(result){
