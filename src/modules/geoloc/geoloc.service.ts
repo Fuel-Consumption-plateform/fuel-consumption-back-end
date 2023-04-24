@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import sendRequestToFlespi from 'utils/flespiRequest';
@@ -10,12 +10,27 @@ import { Reading, convertFuel_levl } from 'utils/convertFuel_levl';
 import { CreateGeolocDto } from './dto/create.dto';
 import { ObjectId } from 'bson';
 import { timestampToDate } from 'utils/timestampToDate';
+import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { Server } from 'socket.io';
 
 
+
+@WebSocketGateway({
+  cors: {
+    origin: '*',
+  },
+})
 
 @Injectable()
 export class GeolocService {
   // add schedule service here and import mongoose model
+  private logger: Logger = new Logger('AppGateway');
+
+  @WebSocketServer()  server: Server;
+  afterInit(server: Server) {
+    this.logger.log('WebSocket Server Initialized');
+  }
+
   constructor(
     private schedulerRegistry: SchedulerRegistry,
     @InjectModel(Geoloc.name)  private model: Model<GeolocDocument>,
@@ -76,18 +91,35 @@ export class GeolocService {
                   
                 }
               })
+              
               // console.log("LOCCCCCCC",loc);
             const locations = item.loc? [ ...item.loc,loc] : loc
              
             // console.log('locations',);
 
-               return await this.model.findOneAndUpdate({vehicule_id:item.vehicule_id['_id']}, {
+               const result=  await this.model.findOneAndUpdate({vehicule_id:item.vehicule_id['_id']}, {
                 loc:locations
               }, {new:true})
               // console.log(result);
+
+              if(result){
+                this.afterInit(this.server);
+                console.log('send message to frontend',loc);
+                this.server.emit('event', loc)
+                  
+
+                  }
+                
+
+              
+              
             }
 
             //ICI SOCKET
+            
+            
+
+          
 
            
           }
@@ -124,7 +156,7 @@ export class GeolocService {
    async find(){
     const geoloc = await this.model.find();
 
-    if (!Geoloc) throw new BadRequestException({ message: 'Geoloc not found.' });
+    if (!geoloc) throw new BadRequestException({ message: 'Geoloc not found.' });
 
     return geoloc;
   }
