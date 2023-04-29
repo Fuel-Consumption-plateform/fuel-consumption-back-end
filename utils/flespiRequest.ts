@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // create an axios get request to flespi
 
-const sendRequestToFlespi = async (channel: string, lastTimeStamp) => {
+const sendRequestToFlespi = async (channel: string, lastTimeStamp: number) => {
   const url = `https://flespi.io/gw/channels/${channel}/messages`;
   return  await axios
     .get(url, {
@@ -14,10 +14,18 @@ const sendRequestToFlespi = async (channel: string, lastTimeStamp) => {
     })
     .then((res) => {
       let data = []
-     // filter response data by timestamp
-      if(res.data.length > 0)  data = res.data.filter((item) => item.server.timestamp >= lastTimeStamp);
-      else data = res.data
+     // filter response data by timestamp 12  + 5*60*1000
      
+     const pas = 1
+      const increment = (lastTimeStamp + pas*60)
+      console.log('avant', lastTimeStamp);
+      if(res.data['result']) {
+         data = res.data.result.filter((item) => item['server.timestamp'] >= increment);
+         console.log('ici', data.length)
+      }
+      else data = res.data['result']
+       
+      console.log('apres', increment)
       return  data;
     })
     .catch((e) => {

@@ -30,7 +30,7 @@ export class UserController {
     }
 
     @Post('create')
-    @UseGuards(JwtAuthGuard)
+    //@UseGuards(JwtAuthGuard)
       async createuser(
         @Body() userData: CreateUserDto,
         @GETUser() user

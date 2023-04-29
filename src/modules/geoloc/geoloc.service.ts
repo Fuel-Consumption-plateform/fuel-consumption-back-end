@@ -38,8 +38,8 @@ export class GeolocService {
     
   ) {}
 
-  // after every 5 seconds
-   @Cron('*/5 * * * * *', { name: 'fetchdata' })
+  // after every 1 minute
+//  @Cron('*/5 * * * * *', { name: 'fetchdata' })
   async handleCron() {
     // start message cron
     const job = this.schedulerRegistry.getCronJob('fetchdata');
@@ -47,7 +47,7 @@ export class GeolocService {
 
     // get All data vehicle
     const vehicules = await this.model.find().populate('vehicule_id');
-    // console.log('ICIIIIIIIIIIIIIII',vehicules);
+    //console.log('ICIIIIIIIIIIIIIII',vehicules);
     
     
      if(vehicules){
@@ -57,7 +57,7 @@ export class GeolocService {
         
           // find channel id by id in device id: item.vehicule_id
           const channel = await this.deviceservice.findOne({_id: item.vehicule_id['device_id']});
-          // console.log(channel);
+         // console.log(channel);
           let lastTimeStamp ;
           if(item.loc) {
             lastTimeStamp = item.loc[item.loc.length - 1].server_timestamp;
@@ -73,13 +73,13 @@ export class GeolocService {
               lastTimeStamp,
             ) as any[];
 
-            // console.log(data);
+            //console.log(data);
             // save data to db
 
-            if( data['result'].length > 0){
-              console.log("lenght")
+            if( data.length > 0){
+            
 
-           const loc=   data['result'].map((item) =>{
+           const loc=   data.map((item) =>{
                 return {
                   'lat':item['position.latitude'],
                   'long':item['position.longitude'],
@@ -91,21 +91,27 @@ export class GeolocService {
                   
                 }
               })
+
+    
+          
+
               
-              // console.log("LOCCCCCCC",loc);
-            const locations = item.loc? [ ...item.loc,loc] : loc
+            //console.log("LOCCCCCCC",loc);
+            const locations =  loc[0]
+      
              
-            // console.log('locations',);
+             console.log('locations',locations);
 
                const result=  await this.model.findOneAndUpdate({vehicule_id:item.vehicule_id['_id']}, {
-                loc:locations
+                $push: { loc: locations },
+  
               }, {new:true})
               // console.log(result);
 
               if(result){
                 this.afterInit(this.server);
-                console.log('send message to frontend',loc);
-                this.server.emit('event', loc)
+               // console.log('send message to frontend',loc);
+               // this.server.emit('event', loc)
                   
 
                   }
@@ -192,6 +198,8 @@ export class GeolocService {
 
     return geoloc;
   }
+
+
 
   
 }

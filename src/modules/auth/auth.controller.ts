@@ -14,8 +14,7 @@ export class AuthController {
          credentials
         );
             res.setHeader('Access-Control-Expose-Headers', 'x-auth-token');
-            res.header('x-auth-token', token).send({ user });
-        
+            res.header('x-auth-token', token).send({ user , token});    
       }
 
 

@@ -18,7 +18,7 @@ export class AuthService {
         const {email, password}= credentials;
         console.log(email,password);
         const user = await this.usersService.authUser(email, password);
-        if (!user) throw new UnauthorizedException('Invalid credentials');
+        if (!user) throw new UnauthorizedException('Invalid credentials provided');
         const payload = pick(user, ['_id', 'name', 'email','role']);
 
             return {

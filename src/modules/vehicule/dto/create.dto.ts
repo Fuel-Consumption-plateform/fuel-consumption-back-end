@@ -15,6 +15,9 @@ export class CreateVehiculeDto {
   @IsNotEmpty({ message: 'Model is required' })
   model?: string;
 
+  
+  quantity_max?: number;
+
 //   calibration?:{litres:number,sensor_readings:number }[]
 
 

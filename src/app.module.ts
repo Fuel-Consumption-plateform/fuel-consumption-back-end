@@ -14,7 +14,7 @@ import { GeolocModule } from './modules/geoloc/geoloc.module';
 import { SitesModule } from './modules/sites/sites.module';
 
 const {
-  MONGO_DB_CONNECTION = 'mongodb://127.0.0.1:27017/fuelComsuptionDB'
+  MONGO_DB_CONNECTION = 'mongodb+srv://williammutombomutombo:william12345@cluster0.oaktfms.mongodb.net/fuelComsuptionDB',
 } = process.env;
 
 @Module({
