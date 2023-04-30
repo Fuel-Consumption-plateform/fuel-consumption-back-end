@@ -7,12 +7,15 @@ import * as csv from 'csv-parser';
 import * as fs from 'fs';
 import { UpdateVehiculeDto } from './dto/update.dto';
 import { GeolocService } from '../geoloc/geoloc.service';
+import mongoose from 'mongoose';
+import { DeviceService } from '../device/device.service';
 
 @Injectable()
 export class VehiculeService {
     constructor(@InjectModel(Vehicule.name)
     private model: Model<VehiculeDocument>,
-    private geolocService:GeolocService
+    private geolocService:GeolocService,
+    private deviceService: DeviceService,
     
     ) {}
 
@@ -69,10 +72,15 @@ export class VehiculeService {
                 console.log(vehicule.calibration);
 
             
-               vehicule.save().then(async (res)=> {
+             return  vehicule.save().then(async (res)=> {
                 console.log(res._id);
                 const vehicule_id_en_string = res._id.toString();
-                console.log(vehicule_id_en_string);
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
+                const mongoose = require('mongoose');
+                const _id = new mongoose.mongo.ObjectId(res.device_id);
+                 console.log(_id);
+                 const device=   await this.deviceService.update(_id , {used:true});
+                 console.log(device);
                   const geoloc= await this.geolocService.createGeoloc({vehicule:vehicule_id_en_string});
 
                   console.log(geoloc);

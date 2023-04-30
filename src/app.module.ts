@@ -12,12 +12,15 @@ import { VehiculeModule } from './modules/vehicule/vehicule.module';
 import { GeolocController } from './modules/geoloc/geoloc.controller';
 import { GeolocModule } from './modules/geoloc/geoloc.module';
 import { SitesModule } from './modules/sites/sites.module';
+import { EventModule } from './modules/event/event.module';
 
-
+const {
+  MONGO_DB_CONNECTION = 'mongodb+srv://williammutombomutombo:william12345@cluster0.oaktfms.mongodb.net/fuelComsuptionDB'
+} = process.env;
 @Module({
   imports: [
     MongooseModule.forRoot(
-      process.env.MONGO_DB_CONNECTION,
+      MONGO_DB_CONNECTION,
       mongooseModuleOptions,
     ),
     MorganModule,
@@ -27,6 +30,7 @@ import { SitesModule } from './modules/sites/sites.module';
     VehiculeModule,
     GeolocModule,
     SitesModule,
+    EventModule,
   ],
   controllers: [AppController, GeolocController],
   providers: [
