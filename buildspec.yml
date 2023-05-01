@@ -22,21 +22,21 @@ phases:
 
   build:
     commands:
-      npm run build
+      - npm run build
       
       # build image
-      docker build -t helios_nestjs:latest .
+      - docker build -t helios_nestjs:latest .
       
       #push to ECR Container Registry
-      docker tag helios_nestjs:latest 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
+      - docker tag helios_nestjs:latest 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
 
   post_build:
     commands:
       # Push the Docker image to the ECR repository
-      docker push 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
+      - docker push 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
       
       # Create a new task definition
-      aws ecs register-task-definition --family helios-backend-task-definition --container-definitions '[
+      - aws ecs register-task-definition --family helios-backend-task-definition --container-definitions '[
       {
       "name": "helios_nestjs",
       "image": "844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest",
@@ -52,4 +52,4 @@ phases:
   deploy:
     commands:
       # Update the ECS service
-      aws ecs update-service --cluster backend --service helios-ec2-backend-service --force-new-deployment
+      - aws ecs update-service --cluster backend --service helios-ec2-backend-service --force-new-deployment
