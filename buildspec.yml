@@ -17,13 +17,13 @@ phases:
       - npm run build
       
       # build image
-      - docker build -t helios_nestjs:latest .
+      - docker build -t helios_nestjs .
 
       # Authenticate with ECR
       - aws ecr get-login --no-include-email --region eu-north-1
       
       #push to ECR Container Registry
-      - docker tag helios_nestjs:latest 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
+      - docker tag helios_nestjs 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
 
       # Push the Docker image to the ECR repository
       - docker push 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
