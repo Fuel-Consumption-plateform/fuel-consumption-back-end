@@ -7,17 +7,18 @@ phases:
       docker: 20
     commands:
       # Install AWS CLI
-      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      unzip awscliv2.zip
-      sudo ./aws/install
+      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - unzip awscliv2.zip
+      - sudo ./aws/install
 
 
   pre_build:
     commands:
       # Install dependencies
-      npm install  
-      # Authenticate with ECR 
-      - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 844349971621.dkr.ecr.eu-north-1.amazonaws.com
+      - npm install
+      # Authenticate with ECR
+      - aws ecr get-login-password --no-include-email --region eu-north-1
+
 
   build:
     commands:
