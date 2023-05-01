@@ -30,7 +30,7 @@ phases:
 
 
       # Create a new task definition
-      - $(aws ecs register-task-definition --family helios-backend-task-definition --container-definitions "$(cat task-definition.json)")
+      - aws ecs register-task-definition --family helios-backend-task-definition --container-definitions "$(cat task-definition.json)"
 
   post_build:
     commands:
