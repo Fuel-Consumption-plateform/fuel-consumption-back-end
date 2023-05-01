@@ -34,7 +34,6 @@ phases:
       # Update the ECS service
       - aws ecs update-service --cluster backend --service helios-ec2-backend-service --force-new-deployment
 
-
 artifacts:
    files:
      - '**/*'
