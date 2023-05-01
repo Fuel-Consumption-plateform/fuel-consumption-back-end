@@ -37,11 +37,10 @@ phases:
       
       # Create a new task definition
       - $(aws ecs register-task-definition --family helios-backend-task-definition --container-definitions "$(cat task-definition.json)")
-  deploy:
-    commands:
       # Update the ECS service
       - aws ecs update-service --cluster backend --service helios-ec2-backend-service --force-new-deployment
-  
+
+
 artifacts:
    files:
      - '**/*'
