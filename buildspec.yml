@@ -15,8 +15,7 @@ phases:
   pre_build:
     commands:
       # Install dependencies
-      npm install 
-       
+      npm install  
       # Authenticate with ECR
       aws ecr get-login --no-include-email --region eu-north-1
 
