@@ -10,8 +10,6 @@ phases:
     commands:
       # Install dependencies
       - npm install
-      # Authenticate with ECR
-      - aws ecr get-login --no-include-email --region eu-north-1
 
 
   build:
@@ -20,14 +18,18 @@ phases:
       
       # build image
       - docker build -t helios_nestjs:latest .
+
+      # Authenticate with ECR
+      - aws ecr get-login --no-include-email --region eu-north-1
       
       #push to ECR Container Registry
       - docker tag helios_nestjs:latest 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
 
-  post_build:
-    commands:
       # Push the Docker image to the ECR repository
       - docker push 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
+
+  post_build:
+    commands:
       
       # Create a new task definition
       - $(aws ecs register-task-definition --family helios-backend-task-definition --container-definitions "$(cat task-definition.json)")
