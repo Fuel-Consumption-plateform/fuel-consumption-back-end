@@ -29,7 +29,6 @@ phases:
       # Push the Docker image to the ECR repository
       - docker push 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
 
-
       # Create a new task definition
       # aws ecs register-task-definition --family helios-backend-task-definition --container-definitions "$(cat task-definition.json)"
 
