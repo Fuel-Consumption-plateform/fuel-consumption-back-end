@@ -16,8 +16,8 @@ phases:
     commands:
       # Install dependencies
       npm install  
-      # Authenticate with ECR
-      aws ecr get-login --no-include-email --region eu-north-1
+      # Authenticate with ECR 
+      - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 844349971621.dkr.ecr.eu-north-1.amazonaws.com
 
   build:
     commands:
