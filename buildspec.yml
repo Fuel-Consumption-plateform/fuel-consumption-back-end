@@ -13,11 +13,12 @@ phases:
 
   build:
     commands:
-      - npm run build
 
       # Authenticate with ECR
       - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 844349971621.dkr.ecr.eu-north-1.amazonaws.com
 
+      # build project
+      - npm run build
 
       # build image
       - docker build -t helios_nestjs .
@@ -30,7 +31,7 @@ phases:
 
 
       # Create a new task definition
-      - aws ecs register-task-definition --family helios-backend-task-definition --container-definitions "$(cat task-definition.json)"
+      # aws ecs register-task-definition --family helios-backend-task-definition --container-definitions "$(cat task-definition.json)"
 
   post_build:
     commands:
