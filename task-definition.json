@@ -1,0 +1,12 @@
+[
+{
+  "name": "helios_nestjs",
+  "image": "844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest",
+  "portMappings": [
+    {
+      "containerPort": 3000,
+      "protocol": "tcp"
+    }
+  ]
+}
+]
