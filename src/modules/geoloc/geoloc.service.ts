@@ -39,7 +39,7 @@ export class GeolocService {
   ) {}
 
   // after every 1 minute
-//  @Cron('*/5 * * * * *', { name: 'fetchdata' })
+@Cron('*/60 * * * * *', { name: 'fetchdata' })
   async handleCron() {
     // start message cron
     const job = this.schedulerRegistry.getCronJob('fetchdata');
@@ -186,18 +186,56 @@ export class GeolocService {
   }
 
   async findOne(obj: {
-    _id?: Schema.Types.ObjectId;
     vehicule_id?: string;
-  }): Promise<GeolocDocument> {
+    date?: string
+  }) {
     const filter: any = {};
 
-    if (obj._id) filter._id = obj._id;
-
-    const geoloc = await this.model.findOne(filter);
-
+    // if (obj._id) filter._id = obj._id;
+    // const geoloc = await this.model.findOne(filter);
+    // if (!geoloc) throw new BadRequestException({ message: 'Geoloc not found.' 
+    // filter one day in loc array and display only loc array
+    const datefinal = new Date(obj.date)
+;
+  
+   const geoloc = await this.model.aggregate([
+     {
+       $match: { vehicule_id: obj.vehicule_id },
+     },
+     {
+        $project: {
+          loc: {
+            $filter: {
+              input: '$loc',
+              as: 'loc',
+              cond: {
+                $eq: [
+                  {
+                    $dateToString: {
+                      format: '%Y-%m-%d',
+                      date: '$$loc.date',
+                    }
+                  }
+                  ,
+                  {
+                    $dateToString: {
+                      format: '%Y-%m-%d',
+                      date: datefinal,
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        
+                        
+     },
+   ]);
     if (!geoloc) throw new BadRequestException({ message: 'Geoloc not found.' });
-
-    return geoloc;
+    // dispay only loc array
+    const loc = geoloc[0].loc? geoloc[0].loc : [];
+    return loc;
   }
 
 

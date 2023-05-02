@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { GeolocService } from './geoloc.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ObjectIdPipe } from '../user/utils/pipeId';
@@ -20,25 +20,26 @@ export class GeolocController {
     }
 
 
-    @Get(':date')
-    @UseGuards(JwtAuthGuard)
-      async findByDate(@Param('date') date: Date) {
-        try {
-          const result = await this.geolocService.findByDate({date});
+    // @Get(':date')
+    // @UseGuards(JwtAuthGuard)
+    //   async findByDate(@Param('date') date: Date) {
+    //     try {
+    //       const result = await this.geolocService.findByDate({date});
 
-          if(result)  return result;
-            else throw new BadRequestException({ message: 'Geoloc not found.' });
+    //       if(result)  return result;
+    //         else throw new BadRequestException({ message: 'Geoloc not found.' });
          
-        } catch (error) {
+    //     } catch (error) {
           
-        }
-      }
+    //     }
+    //   }
     @Get(':id')
     @UseGuards(JwtAuthGuard)
     async findOne(
-      @Param('id', new ObjectIdPipe()) _id: Schema.Types.ObjectId,
-    ): Promise<{geoloc:Geoloc}> {
-      const geoloc = await this.geolocService.findOne({ _id });
+      @Param('id') _id: string,
+      @Query('date') date: string,
+    ) {
+      const geoloc = await this.geolocService.findOne({ vehicule_id : _id, date });
       if (geoloc) return {geoloc} ;
       else throw new BadRequestException({ message: 'Geoloc not found.' });
     }
