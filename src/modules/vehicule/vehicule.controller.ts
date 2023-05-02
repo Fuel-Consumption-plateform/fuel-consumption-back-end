@@ -24,7 +24,7 @@ if (!fs.existsSync(directoryFiles)) {
 }
 @Controller('vehicule')
 export class VehiculeController {
-    constructor(private vehiculeService: VehiculeService,private deviceService: DeviceService,) {}
+    constructor(private vehiculeService: VehiculeService) {}
    
     @Get()
     @UseGuards(JwtAuthGuard)
@@ -78,9 +78,7 @@ export class VehiculeController {
         const vehicule = await this.vehiculeService.create(vehiculeData, urlFile);
         
         if(vehicule){
-            // const idObj = new Schema.Types.ObjectId(vehicule.device_id);
-            // // console.log(idObj);
-            // await this.deviceService.update(idObj , {used:true});
+           
             return { vehicule };
             // return { message: 'Vehicule created successfully', vehicule };
 

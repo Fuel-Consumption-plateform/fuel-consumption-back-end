@@ -1,0 +1,43 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+
+  pre_build:
+    commands:
+      # Install dependencies
+      - npm install
+
+
+  build:
+    commands:
+
+      # Authenticate with ECR
+      - aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 844349971621.dkr.ecr.eu-north-1.amazonaws.com
+
+      # build project
+      - npm run build
+
+      # build image
+      - docker build -t helios_nestjs .
+
+      #push to ECR Container Registry
+      - docker tag helios_nestjs:latest 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
+
+      # Push the Docker image to the ECR repository
+      - docker push 844349971621.dkr.ecr.eu-north-1.amazonaws.com/helios_nestjs:latest
+
+      # Create a new task definition
+      # aws ecs register-task-definition --family helios-backend-task-definition --container-definitions "$(cat task-definition.json)"
+
+  post_build:
+    commands:
+
+      # Update the ECS service
+      - aws ecs update-service --cluster backend --service helios-ec2-backend-service --force-new-deployment
+
+artifacts:
+   files:
+     - '**/*'
