@@ -9,6 +9,7 @@ const hosts = [
   'flespi.com',
   'localhost:3000',
   'localhost:3001',
+  '3.21.73.82:4200',
   'localhost',
   `${HOST_IP}:3000`,
   `${HOST_IP}:3001`,
