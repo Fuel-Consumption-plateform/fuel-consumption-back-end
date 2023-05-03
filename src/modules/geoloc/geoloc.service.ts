@@ -59,8 +59,9 @@ export class GeolocService {
           const channel = await this.deviceservice.findOne({_id: item.vehicule_id['device_id']});
          // console.log(channel);
           let lastTimeStamp ;
-          if(item.loc) {
-            lastTimeStamp = item.loc[item.loc.length - 1].server_timestamp;
+        // verify if loc is not empty
+          if(item?.loc && item.loc.length > 0) {
+            lastTimeStamp = item.loc[item?.loc.length - 1].server_timestamp;
             console.log(lastTimeStamp);
           }else{
             lastTimeStamp=0;
@@ -76,7 +77,7 @@ export class GeolocService {
             //console.log(data);
             // save data to db
 
-            if( data.length > 0){
+            if( data?.length > 0){
             
 
            const loc=   data.map((item) =>{

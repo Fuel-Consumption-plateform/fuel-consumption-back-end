@@ -21,7 +21,7 @@ const sendRequestToFlespi = async (channel: string, lastTimeStamp: number) => {
       console.log('avant', lastTimeStamp);
       if(res.data['result']) {
          data = res.data.result.filter((item) => item['server.timestamp'] >= increment);
-         console.log('ici', data.length)
+         console.log('ici', )
       }
       else data = res.data['result']
        
