@@ -10,6 +10,7 @@ const hosts = [
   'localhost:3000',
   'localhost:3001',
   '3.21.73.82:4200',
+  'd1r4ce9f3jo5h1.cloudfront.net',
   'localhost',
   `${HOST_IP}:3000`,
   `${HOST_IP}:3001`,
