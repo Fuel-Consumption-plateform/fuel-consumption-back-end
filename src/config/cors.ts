@@ -11,7 +11,7 @@ const hosts = [
   'localhost:3001',
   '3.21.73.82:4200',
   'd1r4ce9f3jo5h1.cloudfront.net',
-  'd1z6a4j6x3mcu7.cloudfront.net',
+  'helios.chida-app.com.s3-website.us-east-2.amazonaws.com',
   'helios.chida-app.com.s3-website.us-east-2.amazonaws.com',
   'localhost',
   `${HOST_IP}:3000`,
