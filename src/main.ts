@@ -17,7 +17,7 @@ async function bootstrap(port: number) {
 
 
 async function start() {
-  const ports = [3000, 3001, 3002];
+  const ports = [3000];
   for (const port of ports) {
     await bootstrap(port);
   }
