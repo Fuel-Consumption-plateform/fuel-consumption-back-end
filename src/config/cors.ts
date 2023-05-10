@@ -11,6 +11,7 @@ const hosts = [
   '127.0.0.1:3000',
   'd1r4ce9f3jo5h1.cloudfront.net',
   'helios.chida-app.com.s3-website.us-east-2.amazonaws.com',
+  'backend-helios-1230068417.us-east-2.elb.amazonaws.com',
   'localhost',
   `${HOST_IP}:3000`,
   `${HOST_IP}:4200`,
