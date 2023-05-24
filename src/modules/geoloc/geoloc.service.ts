@@ -41,7 +41,7 @@ export class GeolocService {
   ) {}
 
   // after every 1 minute
-  @Cron('*/5 * * * * *', { name: 'fetchdata' })
+  @Cron('*/60 * * * * *', { name: 'fetchdata' })
   async handleCron() {
     // start message cron
     const job = this.schedulerRegistry.getCronJob('fetchdata');
