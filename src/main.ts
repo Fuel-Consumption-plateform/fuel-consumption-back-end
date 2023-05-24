@@ -12,6 +12,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('fuelcomsuption/api');
   await app.listen(process.env.PORT || 3000);
-  console.info(`Application is running on ${await app.getUrl()}`)
+  console.info(`Application is running on ${await app.getUrl()}`);
 }
 bootstrap();

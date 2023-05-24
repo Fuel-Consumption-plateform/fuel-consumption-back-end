@@ -2,7 +2,7 @@ const { HOST_IP = 'localhost' } = process.env;
 
 const corsOptions = {
   origin: [],
-  credentials: true
+  credentials: true,
 };
 
 const hosts = [
@@ -15,10 +15,10 @@ const hosts = [
   `${HOST_IP}:3001`,
   `${HOST_IP}:4200`,
   `${HOST_IP}:5200`,
-  HOST_IP
+  HOST_IP,
 ];
 
-hosts.forEach(host => {
+hosts.forEach((host) => {
   corsOptions.origin.push(`http://${host}`);
   corsOptions.origin.push(`https://${host}`);
   if (/.com$/.test(host)) {

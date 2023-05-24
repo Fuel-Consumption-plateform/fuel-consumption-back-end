@@ -10,11 +10,13 @@ import { GeolocModule } from '../geoloc/geoloc.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Vehicule.name, schema: VehiculeSchema }]),
+    MongooseModule.forFeature([
+      { name: Vehicule.name, schema: VehiculeSchema },
+    ]),
     DeviceModule,
-    GeolocModule
+    GeolocModule,
   ],
   controllers: [VehiculeController],
-  providers: [VehiculeService]
+  providers: [VehiculeService],
 })
 export class VehiculeModule {}

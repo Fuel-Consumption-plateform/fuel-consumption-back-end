@@ -1,5 +1,4 @@
-
-import { Document} from 'mongoose';
+import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { isValid, international } from 'phone-cd';
 
@@ -13,15 +12,12 @@ export type DeviceDocument = Device & Document;
    
    */
   { timestamps: true },
-  
-  
 )
 export class Device {
-
   @Prop({ required: true })
   fabricant: string;
 
-  @Prop({ required:true })
+  @Prop({ required: true })
   IMEI: string;
 
   @Prop({
@@ -37,10 +33,10 @@ export class Device {
   })
   Num_phone: string;
 
-  @Prop({ required:true })
+  @Prop({ required: true })
   Model: string;
 
-  @Prop({ required:false })
+  @Prop({ required: false })
   channel: string;
 
   @Prop({ default: false })

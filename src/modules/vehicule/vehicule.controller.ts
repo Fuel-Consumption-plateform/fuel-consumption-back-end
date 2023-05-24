@@ -1,4 +1,17 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Put, UnauthorizedException, UseGuards, UseInterceptors, UploadedFile, UploadedFiles } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UnauthorizedException,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  UploadedFiles,
+} from '@nestjs/common';
 import { VehiculeService } from './vehicule.service';
 import { Vehicule } from './vehicule.model';
 import { CreateVehiculeDto } from './dto/create.dto';
@@ -24,81 +37,74 @@ if (!fs.existsSync(directoryFiles)) {
 }
 @Controller('vehicule')
 export class VehiculeController {
-    constructor(private vehiculeService: VehiculeService) {}
-   
-    @Get()
-    @UseGuards(JwtAuthGuard)
-    async find(
-    ) {
-      const vehicule = await this.vehiculeService.find();
-      if (vehicule) return vehicule ;
-      else throw new BadRequestException({ message: 'Vehicule not found.' });
-    }
+  constructor(private vehiculeService: VehiculeService) {}
 
-    @Get(':id')
-    @UseGuards(JwtAuthGuard)
-    async findOne(
-      @Param('id', new ObjectIdPipe()) _id: Schema.Types.ObjectId,
-    ): Promise<{vehicule:Vehicule}> {
-      const vehicule = await this.vehiculeService.findOne({ _id });
-      if (vehicule) return {vehicule} ;
-      else throw new BadRequestException({ message: 'Vehicule not found.' });
-    }
-   
-    @Post('create')
-    @UseInterceptors(
-        FilesInterceptor('file', 1, {
-          fileFilter: (req, file, callback) => {
-            console.log(file);
-            if (!file.originalname.match(/\.(csv)$/)) {
-              return callback(
-                new UnauthorizedException('Only csv are allowed!'),
-                false,
-              );
-            }
-            callback(null, true);
-          },   
-          storage: diskStorage({
-            destination: directoryFiles,
-            filename: (req, file, cb) => {
-              const randomName =
-                new Date().getTime() + Math.floor(Math.random() + 1000); //ile.originalname.split('.');
-              cb(null, `${randomName}${extname(file.originalname)}`);
-            },
-          }),    
-        }),
-      )
-     async createVehicule(
-      @UploadedFiles() file,
-      @Body() vehiculeData: CreateVehiculeDto, 
-        ): Promise<any> {
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async find() {
+    const vehicule = await this.vehiculeService.find();
+    if (vehicule) return vehicule;
+    else throw new BadRequestException({ message: 'Vehicule not found.' });
+  }
+
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  async findOne(
+    @Param('id', new ObjectIdPipe()) _id: Schema.Types.ObjectId,
+  ): Promise<{ vehicule: Vehicule }> {
+    const vehicule = await this.vehiculeService.findOne({ _id });
+    if (vehicule) return { vehicule };
+    else throw new BadRequestException({ message: 'Vehicule not found.' });
+  }
+
+  @Post('create')
+  @UseInterceptors(
+    FilesInterceptor('file', 1, {
+      fileFilter: (req, file, callback) => {
         console.log(file);
-        if(file){
-          const urlFile = file[0].path;
-        const vehicule = await this.vehiculeService.create(vehiculeData, urlFile);
-        
-        if(vehicule){
-           
-            return { vehicule };
-            // return { message: 'Vehicule created successfully', vehicule };
-
-
+        if (!file.originalname.match(/\.(csv)$/)) {
+          return callback(
+            new UnauthorizedException('Only csv are allowed!'),
+            false,
+          );
         }
-       
-        }
-        else{
-            throw new BadRequestException({ message: 'file is required' });
-          }
-     
+        callback(null, true);
+      },
+      storage: diskStorage({
+        destination: directoryFiles,
+        filename: (req, file, cb) => {
+          const randomName =
+            new Date().getTime() + Math.floor(Math.random() + 1000); //ile.originalname.split('.');
+          cb(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  async createVehicule(
+    @UploadedFiles() file,
+    @Body() vehiculeData: CreateVehiculeDto,
+  ): Promise<any> {
+    console.log(file);
+    if (file) {
+      const urlFile = file[0].path;
+      const vehicule = await this.vehiculeService.create(vehiculeData, urlFile);
+
+      if (vehicule) {
+        return { vehicule };
+        // return { message: 'Vehicule created successfully', vehicule };
+      }
+    } else {
+      throw new BadRequestException({ message: 'file is required' });
     }
+  }
 
-    @Put(':id')
-      @UseGuards(JwtAuthGuard)
-      async update(
-          @Param('id', new ObjectIdPipe()) id: Schema.Types.ObjectId,
-          @Body() updateVehiculeDto: UpdateVehiculeDto,
-        ): Promise<{vehicule:Vehicule}> {
-          const vehicule = await this.vehiculeService.update(id, updateVehiculeDto);
-          return {vehicule} ;
-        }  
+  @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  async update(
+    @Param('id', new ObjectIdPipe()) id: Schema.Types.ObjectId,
+    @Body() updateVehiculeDto: UpdateVehiculeDto,
+  ): Promise<{ vehicule: Vehicule }> {
+    const vehicule = await this.vehiculeService.update(id, updateVehiculeDto);
+    return { vehicule };
+  }
 }

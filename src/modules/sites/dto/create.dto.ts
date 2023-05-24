@@ -8,5 +8,4 @@ export class CreateSiteDto {
     lat: number;
     long: number;
   };
-
 }

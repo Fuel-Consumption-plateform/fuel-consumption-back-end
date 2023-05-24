@@ -1,12 +1,8 @@
-
-import { Document} from 'mongoose';
+import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Schema as _Schema } from 'mongoose';
 
-
-
-
-const LocSchema = new  _Schema(
+const LocSchema = new _Schema(
   {
     lat: { type: Number, required: true },
     long: { type: Number, required: true },
@@ -14,11 +10,10 @@ const LocSchema = new  _Schema(
     timestamp: { type: Number, required: true },
     server_timestamp: { type: Number, required: true },
     allumage: { type: Boolean, required: true },
-    date: {type: Date, required:true}
+    date: { type: Date, required: true },
   },
-  { timestamps: true},
+  { timestamps: true },
 );
-
 
 export type GeolocDocument = Geoloc & Document;
 
@@ -30,27 +25,21 @@ export type GeolocDocument = Geoloc & Document;
    
    */
   { timestamps: true },
-  
-  
 )
 export class Geoloc {
-
   @Prop({ required: true, ref: 'Vehicule' })
-  vehicule_id:  string;
+  vehicule_id: string;
 
-  @Prop({  type: Array, of : LocSchema })
-  loc: Array< 
-  {
+  @Prop({ type: Array, of: LocSchema })
+  loc: Array<{
     lat: number;
     long: number;
     fluel_level: number;
     timestamp: number;
     server_timestamp: number;
     allumage: boolean;
-    date:Date;
-
+    date: Date;
   }>;
-
 }
 
 export const GeolocSchema = SchemaFactory.createForClass(Geoloc);

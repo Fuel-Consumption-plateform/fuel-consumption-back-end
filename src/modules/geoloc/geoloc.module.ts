@@ -9,10 +9,9 @@ import { DeviceModule } from '../device/device.module';
   imports: [
     MongooseModule.forFeature([{ name: Geoloc.name, schema: GeolocSchema }]),
     ScheduleModule.forRoot(),
-    DeviceModule
-       
+    DeviceModule,
   ],
   providers: [GeolocService],
-  exports: [GeolocService]
+  exports: [GeolocService],
 })
 export class GeolocModule {}

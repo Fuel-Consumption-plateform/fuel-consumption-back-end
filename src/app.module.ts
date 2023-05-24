@@ -15,14 +15,11 @@ import { SitesModule } from './modules/sites/sites.module';
 import { EventModule } from './modules/event/event.module';
 
 const {
-  MONGO_DB_CONNECTION = 'mongodb+srv://williammutombomutombo:william12345@cluster0.oaktfms.mongodb.net/fuelComsuptionDB'
+  MONGO_DB_CONNECTION = 'mongodb+srv://williammutombomutombo:william12345@cluster0.oaktfms.mongodb.net/fuelComsuptionDB',
 } = process.env;
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      MONGO_DB_CONNECTION,
-      mongooseModuleOptions,
-    ),
+    MongooseModule.forRoot(MONGO_DB_CONNECTION, mongooseModuleOptions),
     MorganModule,
     UserModule,
     AuthModule,

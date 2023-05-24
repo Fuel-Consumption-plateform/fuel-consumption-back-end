@@ -36,7 +36,6 @@ export class Site {
     }),
   )
   geoLoc: { lat: number; long: number };
-
 }
 
 export const SiteSchema = SchemaFactory.createForClass(Site);

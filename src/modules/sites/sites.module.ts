@@ -7,10 +7,8 @@ import { Site, SiteSchema } from './sites.model';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Site.name, schema: SiteSchema }]),
-    
-       
   ],
   controllers: [SitesController],
-  providers: [SitesService]
+  providers: [SitesService],
 })
 export class SitesModule {}

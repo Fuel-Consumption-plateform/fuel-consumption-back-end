@@ -1,4 +1,3 @@
-
-export interface loginI{
-    email: string
+export interface loginI {
+  email: string;
 }

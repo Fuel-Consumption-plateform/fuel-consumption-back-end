@@ -6,10 +6,11 @@ import { Eventvehicule, EventvehiculeSchema } from './event.model';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Eventvehicule.name, schema: EventvehiculeSchema }]),
-       
+    MongooseModule.forFeature([
+      { name: Eventvehicule.name, schema: EventvehiculeSchema },
+    ]),
   ],
   controllers: [EventController],
-  providers: [EventService]
+  providers: [EventService],
 })
 export class EventModule {}

@@ -12,5 +12,4 @@ export class CreateUserDto {
 
   @Optional()
   role?: string;
-
 }

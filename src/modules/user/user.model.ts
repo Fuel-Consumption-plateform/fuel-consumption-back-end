@@ -1,5 +1,4 @@
-
-import { Document} from 'mongoose';
+import { Document } from 'mongoose';
 
 import * as bcrypt from 'bcryptjs';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -14,15 +13,12 @@ export type UserDocument = User & Document;
    
    */
   { timestamps: true },
-  
-  
 )
 export class User {
-
   @Prop({ required: true })
   name: string;
 
-  @Prop({  })
+  @Prop({})
   email: string;
 
   // hash = await bcrypt.hash(password, 10);
