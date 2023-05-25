@@ -12,7 +12,7 @@ export function convertFuel_levl(fuel_level: string, readings:  Array<Reading>)
    const readingsN = readings.map(x => ({litres: parseFloat(x.litres), sensor_readings: parseFloat(x.sensor_readings)})) 
    const fuelN = parseFloat(fuel_level)
 
-  const max =readingsN.filter(x => (x.sensor_readings)> ((fuelN))) [0]
+  const max =readingsN.filter(x => (x.sensor_readings)>= ((fuelN))) [0]
   const mins = readingsN.filter((x) => (x.sensor_readings) <= (fuelN))
   const min = mins[mins.length-1]
   console.log('max', max)
