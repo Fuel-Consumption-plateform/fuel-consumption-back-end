@@ -80,6 +80,7 @@ export class GeolocService {
                return {
                  lat: x['position.latitude'],
                  long: x['position.longitude'],
+                 reading:x['lls.value.1'],
                  fuel_level: convertFuel_levl(x['lls.value.1'], calibration),
                  timestamp: x['timestamp'],
                  server_timestamp: x['server.timestamp'],

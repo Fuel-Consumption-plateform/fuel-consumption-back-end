@@ -6,6 +6,7 @@ const LocSchema = new _Schema(
   {
     lat: { type: Number, required: true },
     long: { type: Number, required: true },
+    reading: { type: Number },
     fluel_level: { type: Number, required: true },
     timestamp: { type: Number, required: true },
     server_timestamp: { type: Number, required: true },
